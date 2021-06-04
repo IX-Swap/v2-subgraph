@@ -1,31 +1,31 @@
 /* eslint-disable prefer-const */
 import { BigDecimal, BigInt, EthereumEvent } from '@graphprotocol/graph-ts'
-import { Bundle, Pair, PairDayData, Token, TokenDayData, UniswapDayData, UniswapFactory } from '../types/schema'
+import { Bundle, Pair, PairDayData, Token, TokenDayData, IxsDayData, IxsFactory } from '../types/schema'
 import { PairHourData } from './../types/schema'
 import { FACTORY_ADDRESS, ONE_BI, ZERO_BD, ZERO_BI } from './helpers'
 
-export function updateUniswapDayData(event: EthereumEvent): UniswapDayData {
-  let uniswap = UniswapFactory.load(FACTORY_ADDRESS)
+export function updateIxsDayData(event: EthereumEvent): IxsDayData {
+  let ixs = IxsFactory.load(FACTORY_ADDRESS)
   let timestamp = event.block.timestamp.toI32()
   let dayID = timestamp / 86400
   let dayStartTimestamp = dayID * 86400
-  let uniswapDayData = UniswapDayData.load(dayID.toString())
-  if (uniswapDayData === null) {
-    uniswapDayData = new UniswapDayData(dayID.toString())
-    uniswapDayData.date = dayStartTimestamp
-    uniswapDayData.dailyVolumeUSD = ZERO_BD
-    uniswapDayData.dailyVolumeETH = ZERO_BD
-    uniswapDayData.totalVolumeUSD = ZERO_BD
-    uniswapDayData.totalVolumeETH = ZERO_BD
-    uniswapDayData.dailyVolumeUntracked = ZERO_BD
+  let ixsDayData = IxsDayData.load(dayID.toString())
+  if (ixsDayData === null) {
+    ixsDayData = new IxsDayData(dayID.toString())
+    ixsDayData.date = dayStartTimestamp
+    ixsDayData.dailyVolumeUSD = ZERO_BD
+    ixsDayData.dailyVolumeETH = ZERO_BD
+    ixsDayData.totalVolumeUSD = ZERO_BD
+    ixsDayData.totalVolumeETH = ZERO_BD
+    ixsDayData.dailyVolumeUntracked = ZERO_BD
   }
 
-  uniswapDayData.totalLiquidityUSD = uniswap.totalLiquidityUSD
-  uniswapDayData.totalLiquidityETH = uniswap.totalLiquidityETH
-  uniswapDayData.txCount = uniswap.txCount
-  uniswapDayData.save()
+  ixsDayData.totalLiquidityUSD = ixs.totalLiquidityUSD
+  ixsDayData.totalLiquidityETH = ixs.totalLiquidityETH
+  ixsDayData.txCount = ixs.txCount
+  ixsDayData.save()
 
-  return uniswapDayData as UniswapDayData
+  return ixsDayData as IxsDayData
 }
 
 export function updatePairDayData(event: EthereumEvent): PairDayData {
