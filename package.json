@@ -4,12 +4,12 @@
   "repository": "https://github.com/IX-Swap/v2-subgraph",
   "license": "GPL-3.0-or-later",
   "scripts": {
-    "codegen": "graph codegen --output-dir src/types/",
-    "build": "graph build",
-    "create-dev": "graph create AlexanderC/Ixs --node http://127.0.0.1:8020",
-    "deploy-dev": "graph deploy AlexanderC/Ixs --debug --ipfs http://localhost:5001 --node http://127.0.0.1:8020",
-    "deploy-stage": "graph deploy AlexanderC/Ixs-stage --debug --ipfs https://api.thegraph.com/ipfs/ --node https://api.thegraph.com/deploy/",
-    "deploy-prod": "graph deploy AlexanderC/Ixs --ipfs https://api.thegraph.com/ipfs/ --node https://api.thegraph.com/deploy/"
+    "codegen": "yarn graph codegen --output-dir src/types/",
+    "build": "yarn graph build",
+    "create-dev": "yarn graph create ix-swap/ixs --node http://127.0.0.1:8020",
+    "deploy-dev": "yarn graph deploy ix-swap/ixs --debug --ipfs http://localhost:5001 --node http://127.0.0.1:8020",
+    "deploy-stage": "yarn graph deploy ix-swap/ixs-stage --debug --ipfs https://api.thegraph.com/ipfs/ --node https://api.thegraph.com/deploy/",
+    "deploy-prod": "yarn graph deploy ix-swap/ixs --ipfs https://api.thegraph.com/ipfs/ --node https://api.thegraph.com/deploy/"
   },
   "devDependencies": {
     "@graphprotocol/graph-cli": "^0.16.0",
