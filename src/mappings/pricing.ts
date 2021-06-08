@@ -60,8 +60,8 @@ let WHITELIST: string[] = [
   '0xdf5e0e81dff6faf3a7e52ba697820c5e32d806a8', // yCurv
   '0x853d955acef822db058eb8505911ed77f175b99e', // FRAX
   '0xa47c8bf37f92abed4a126bda807a7b7498661acd', // WUST
-  '0x1f9840a85d5af5bf1d1762f925bdaddc4201f984', // IXS
-  '0x2260fac5e5542a773aa44fbcfedf7c193bc2c599' // WBTC
+  '0x2260fac5e5542a773aa44fbcfedf7c193bc2c599', // WBTC
+  '0x06b32E7Eb6F818c859e69334AC75f9c3b9AecF62', // IXS
 ]
 
 // minimum liquidity required to count towards tracked volume for pairs with small # of Lps
