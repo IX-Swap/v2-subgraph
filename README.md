@@ -1,4 +1,4 @@
-# Ixs V2 Subgraph
+# IX Swap Subgraph
 
 [Ixs](https://ixswap.io/) is a decentralized protocol for automated token exchange on Ethereum.
 
@@ -22,7 +22,7 @@ Below are a few ways to show how to query the ixs-subgraph for data. The queries
 
 #### IxsFactory
 
-Contains data across all of Ixs V2. This entity tracks important things like total liquidity (in ETH and USD, see below), all time volume, transaction count, number of pairs and more.
+Contains data across all of IX Swap. This entity tracks important things like total liquidity (in ETH and USD, see below), all time volume, transaction count, number of pairs and more.
 
 #### Token
 
