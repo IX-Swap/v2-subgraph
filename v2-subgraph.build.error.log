@@ -13,3 +13,22 @@
 - Compile subgraph
   Compile data source template: Pair => build/templates/Pair/Pair.wasm
 - Compile subgraph
+✔ Compile subgraph
+- Write compiled subgraph to build/
+  Copy subgraph file build/schema.graphql
+- Write compiled subgraph to build/
+  Write subgraph file build/Factory/abis/factory.json
+- Write compiled subgraph to build/
+  Write subgraph file build/Factory/abis/ERC20.json
+- Write compiled subgraph to build/
+  Write subgraph file build/Factory/abis/ERC20SymbolBytes.json
+- Write compiled subgraph to build/
+  Write subgraph file build/Factory/abis/ERC20NameBytes.json
+- Write compiled subgraph to build/
+  Write subgraph file build/Pair/abis/pair.json
+- Write compiled subgraph to build/
+  Write subgraph file build/Pair/abis/factory.json
+- Write compiled subgraph to build/
+  Write subgraph manifest build/subgraph.yaml
+- Write compiled subgraph to build/
+✔ Write compiled subgraph to build/
