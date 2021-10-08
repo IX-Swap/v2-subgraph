@@ -11,5 +11,5 @@
 - Compile subgraph
   Compile data source: Factory => build/Factory/Factory.wasm
 - Compile subgraph
-  Compile data source template: Pair => build/templates/Pair/Pair.wasm
-- Compile subgraph
+✖ Failed to compile subgraph: Failed to compile data source mapping: Import file 'src/types/Factory/Factory.ts' not found.
+error Command failed with exit code 1.

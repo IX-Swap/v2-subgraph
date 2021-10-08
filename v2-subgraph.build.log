@@ -2,8 +2,8 @@ Unable to calculate incremental build state. Instead running full rebuild. Ensur
 
 Invoking: yarn graph build 
 
-yarn run v1.22.10
-$ /home/alex/Projects/ixs-monorepo/subgraph/node_modules/.bin/graph build
+yarn run v1.22.11
+$ /home/abylay/Projects/ixs/v2-monorepo/subgraph/node_modules/.bin/graph build
 - Apply migrations
   Skip migration: Bump mapping apiVersion from 0.0.1 to 0.0.2
 - Apply migrations
@@ -17,5 +17,17 @@ $ /home/alex/Projects/ixs-monorepo/subgraph/node_modules/.bin/graph build
 - Compile subgraph
   Compile data source: Factory => build/Factory/Factory.wasm
 - Compile subgraph
-  Compile data source template: Pair => build/templates/Pair/Pair.wasm
-- Compile subgraph
+✖ Failed to compile subgraph: Failed to compile data source mapping: Import file 'src/types/Factory/Factory.ts' not found.
+Error: Failed to compile data source mapping: Import file 'src/types/Factory/Factory.ts' not found.
+    at Compiler._compileDataSourceMapping (/home/abylay/Projects/ixs/v2-monorepo/common/temp/node_modules/@graphprotocol/graph-cli/src/compiler.js:308:13)
+    at /home/abylay/Projects/ixs/v2-monorepo/common/temp/node_modules/@graphprotocol/graph-cli/src/compiler.js:184:20
+    at updateInDeepMap (/home/abylay/Projects/ixs/v2-monorepo/common/temp/node_modules/immutable/dist/immutable.js:1971:22)
+    at updateInDeepMap (/home/abylay/Projects/ixs/v2-monorepo/common/temp/node_modules/immutable/dist/immutable.js:1980:23)
+    at updateInDeepMap (/home/abylay/Projects/ixs/v2-monorepo/common/temp/node_modules/immutable/dist/immutable.js:1980:23)
+    at Map.updateIn (/home/abylay/Projects/ixs/v2-monorepo/common/temp/node_modules/immutable/dist/immutable.js:1278:26)
+    at /home/abylay/Projects/ixs/v2-monorepo/common/temp/node_modules/@graphprotocol/graph-cli/src/compiler.js:183:24
+    at /home/abylay/Projects/ixs/v2-monorepo/common/temp/node_modules/immutable/dist/immutable.js:3016:46
+    at List.__iterate (/home/abylay/Projects/ixs/v2-monorepo/common/temp/node_modules/immutable/dist/immutable.js:2206:13)
+    at IndexedIterable.mappedSequence.__iterateUncached (/home/abylay/Projects/ixs/v2-monorepo/common/temp/node_modules/immutable/dist/immutable.js:3015:23)
+error Command failed with exit code 1.
+info Visit https://yarnpkg.com/en/docs/cli/run for documentation about this command.
