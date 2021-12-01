@@ -8,8 +8,8 @@
     "build": "yarn graph build",
     "create-dev": "yarn graph create ix-swap/ixs --node http://127.0.0.1:8020",
     "deploy-dev": "yarn graph deploy ix-swap/ixs --debug --ipfs http://localhost:5001 --node http://127.0.0.1:8020",
-    "deploy-stage": "yarn graph deploy ix-swap/ixs-stage --debug --ipfs https://api.thegraph.com/ipfs/ --node https://api.thegraph.com/deploy/",
-    "deploy-prod": "yarn graph deploy ix-swap/ixs --ipfs https://api.thegraph.com/ipfs/ --node https://api.thegraph.com/deploy/"
+    "deploy-stage": "yarn graph deploy ix-swap/ixs-stage --debug --ipfs https://api.thegraph.com/ipfs/ --node https://api.thegraph.com/deploy/ --access-token",
+    "deploy-prod": "yarn graph deploy ix-swap/ixs --ipfs https://api.thegraph.com/ipfs/ --node https://api.thegraph.com/deploy/ --access-token"
   },
   "devDependencies": {
     "@graphprotocol/graph-cli": "^0.16.0",
