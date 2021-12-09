@@ -253,6 +253,7 @@ export function handleSync(event: Sync): void {
     trackedLiquidityETH = ZERO_BD
   }
 
+  
   // use derived amounts within pair
   pair.trackedReserveETH = trackedLiquidityETH
   pair.reserveETH = pair.reserve0
@@ -422,7 +423,8 @@ export function handleSwap(event: Swap): void {
   let trackedAmountETH: BigDecimal
   if (bundle.ethPrice.equals(ZERO_BD)) {
     trackedAmountETH = ZERO_BD
-  } else {
+  } 
+  else {
     trackedAmountETH = trackedAmountUSD.div(bundle.ethPrice)
   }
 

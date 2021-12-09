@@ -47,9 +47,10 @@ export function convertTokenToDecimal(tokenAmount: BigInt, exchangeDecimals: Big
 export function equalToZero(value: BigDecimal): boolean {
   const formattedVal = parseFloat(value.toString())
   const zero = parseFloat(ZERO_BD.toString())
-  if (zero == formattedVal) {
+  
+  if (zero == formattedVal)
     return true
-  }
+
   return false
 }
 
@@ -70,15 +71,21 @@ export function fetchTokenSymbol(tokenAddress: Address): string {
   // try types string and bytes32 for symbol
   let symbolValue = 'unknown'
   let symbolResult = contract.try_symbol()
-  if (symbolResult.reverted) {
+  if (symbolResult.reverted) 
+  {
     let symbolResultBytes = contractSymbolBytes.try_symbol()
-    if (!symbolResultBytes.reverted) {
+    
+    if (!symbolResultBytes.reverted) 
+    {
       // for broken pairs that have no symbol function exposed
-      if (!isNullEthValue(symbolResultBytes.value.toHexString())) {
+      if (!isNullEthValue(symbolResultBytes.value.toHexString())) 
+      {
         symbolValue = symbolResultBytes.value.toString()
       }
     }
-  } else {
+  } 
+  else 
+  {
     symbolValue = symbolResult.value
   }
 
@@ -145,14 +152,20 @@ export function createLiquidityPosition(exchange: Address, user: Address): Liqui
     .toHexString()
     .concat('-')
     .concat(user.toHexString())
+
   let liquidityTokenBalance = LiquidityPosition.load(id)
-  if (liquidityTokenBalance === null) {
+
+  if (liquidityTokenBalance === null) 
+  {
     let pair = Pair.load(exchange.toHexString())
+
     pair.liquidityProviderCount = pair.liquidityProviderCount.plus(ONE_BI)
     liquidityTokenBalance = new LiquidityPosition(id)
     liquidityTokenBalance.liquidityTokenBalance = ZERO_BD
+    
     liquidityTokenBalance.pair = exchange.toHexString()
     liquidityTokenBalance.user = user.toHexString()
+
     liquidityTokenBalance.save()
     pair.save()
   }
