@@ -41,5 +41,4 @@ export class TokenDefinition {
     // If not found, return null
     return null
   }
-
 }

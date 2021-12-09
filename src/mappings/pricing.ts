@@ -8,34 +8,82 @@ const USDC_WETH_PAIR = '0x0000000000000000000000000000000000000000' // created 1
 const DAI_WETH_PAIR = '0x0000000000000000000000000000000000000000' // created block 10042267
 const USDT_WETH_PAIR = '0x0000000000000000000000000000000000000000' // created block 10093341
 
+const IXSC_WETH_PAIR = '0x5749a57A3e63B659C21db01607c268bc8D7D7E47'  // Ixswap Stable Coin      : block: ...
+const IXSCD_WETH_PAIR = '0xf60D483d820c063BC9AfcA8558aAfd5b3051A9d9' // Ixswap Stable Coin DAI  : block: ...
+
+
+
+
 export function getEthPriceInUSD(): BigDecimal {
   // fetch eth prices for each stablecoin
   let daiPair = Pair.load(DAI_WETH_PAIR) // dai is token0
   let usdcPair = Pair.load(USDC_WETH_PAIR) // usdc is token0
   let usdtPair = Pair.load(USDT_WETH_PAIR) // usdt is token1
+  
 
-  // all 3 have been created
-  if (daiPair !== null && usdcPair !== null && usdtPair !== null) {
-    let totalLiquidityETH = daiPair.reserve1.plus(usdcPair.reserve1).plus(usdtPair.reserve0)
-    let daiWeight = daiPair.reserve1.div(totalLiquidityETH)
-    let usdcWeight = usdcPair.reserve1.div(totalLiquidityETH)
-    let usdtWeight = usdtPair.reserve0.div(totalLiquidityETH)
-    return daiPair.token0Price
-      .times(daiWeight)
-      .plus(usdcPair.token0Price.times(usdcWeight))
-      .plus(usdtPair.token1Price.times(usdtWeight))
-    // dai and USDC have been created
-  } else if (daiPair !== null && usdcPair !== null) {
-    let totalLiquidityETH = daiPair.reserve1.plus(usdcPair.reserve1)
-    let daiWeight = daiPair.reserve1.div(totalLiquidityETH)
-    let usdcWeight = usdcPair.reserve1.div(totalLiquidityETH)
-    return daiPair.token0Price.times(daiWeight).plus(usdcPair.token0Price.times(usdcWeight))
-    // USDC is the only pair so far
-  } else if (usdcPair !== null) {
-    return usdcPair.token0Price
-  } else {
+  //for kovan
+  // delete all this code untill -> scroll down
+  //
+  let ixscPair = Pair.load(IXSC_WETH_PAIR) // Ixswap Stable Coin & Ixswap Stable Coin DAI
+  let ixscdPair = Pair.load(IXSCD_WETH_PAIR) // Ixswap Stable Coin & Ixswap Stable Coin DAI
+
+  if(ixscPair !== null && ixscdPair !== null)
+  {
+    let totalLiquidityETH = ixscPair.reserve1.plus(ixscdPair.reserve1)
+    let ixscWeight = ixscPair.reserve1.div(totalLiquidityETH)
+    let ixscdWeight = ixscdPair.reserve1.div(totalLiquidityETH)
+
+    return ixscPair.token0Price.times(ixscWeight).plus(ixscdPair.token0Price.times(ixscdWeight))
+  }
+  else if (ixscPair !== null) 
+  {
+    return ixscPair.token0Price
+  } 
+  else 
+  {
     return ZERO_BD
   }
+  // delete untill here
+
+
+
+  //          Decomment when move to mainnet
+  // all 3 have been created
+  // if (daiPair !== null && usdcPair !== null && usdtPair !== null)
+  // {
+  //   let totalLiquidityETH = daiPair.reserve1.plus(usdcPair.reserve1).plus(usdtPair.reserve0)
+  //   let daiWeight = daiPair.reserve1.div(totalLiquidityETH)
+  //   let usdcWeight = usdcPair.reserve1.div(totalLiquidityETH)
+  //   let usdtWeight = usdtPair.reserve0.div(totalLiquidityETH)
+
+  //   //kovan
+  //   let ixscWeight = usdcPair.reserve1.div(totalLiquidityETH)
+  //   let ixscdWeight = usdtPair.reserve0.div(totalLiquidityETH)
+
+
+  //   return daiPair.token0Price
+  //     .times(daiWeight)
+  //     .plus(usdcPair.token0Price.times(usdcWeight))
+  //     .plus(usdtPair.token1Price.times(usdtWeight))
+  // } 
+
+  /*    Decomment after moving on mainnet       */
+  // else if (daiPair !== null && usdcPair !== null) 
+  // {
+  //   let totalLiquidityETH = daiPair.reserve1.plus(usdcPair.reserve1)
+  //   let daiWeight = daiPair.reserve1.div(totalLiquidityETH)
+  //   let usdcWeight = usdcPair.reserve1.div(totalLiquidityETH)
+  //   return daiPair.token0Price.times(daiWeight).plus(usdcPair.token0Price.times(usdcWeight))
+  //   // USDC is the only pair so far
+  // } 
+  // else if (usdcPair !== null) 
+  // {
+  //   return usdcPair.token0Price
+  // } 
+  // else 
+  // {
+  //   return ZERO_BD
+  // }
 }
 
 // token where amounts should contribute to tracked volume and liquidity
@@ -47,7 +95,7 @@ let WHITELIST: string[] = [
   '0xc6e977741487dd8457397b185709cd89b0cf5e7e', // TUSD
   '0x5d3a536e4d6dbd6114cc1ead35777bab948e3643', // cDAI
   '0xb6b09fbffba6a5c4631e5f7b2e3ee183ac259c0d', // cUSDC
-  // '0x86fadb80d8d2cff3c3680819e4da99c10232ba0f', // EBASE
+  // '0xdB33dFD3D61308C33C63209845DaD3e6bfb2c674', // EBASE
   '0x406555dbf02e9e4df9adeaec9da76abeed8c1bc3', // sUSD
   '0xac94ea989f6955c67200dd67f0101e1865a560ea', // MKR
   '0x61460874a7196d6a22d1ee4922473664b3e95270', // COMP
@@ -61,7 +109,10 @@ let WHITELIST: string[] = [
   '0xa0a5ad2296b38bd3e3eb59aaeaf1589e8d9a29a9', // WBTC
   '0xA1997c88a60dCe7BF92A3644DA21e1FfC8F96dC2', // IXS
   '0xB1519Ffe2761Eb68C11F53eBb550f71C4E04C35F', // ISXgov
-//'0xLAkfjaasdflk3fj38raasdfkj49d84hjlfjakl34', // Fantom stable
+
+
+  '0xbc55ad5733a1bb050f51bbdfb65ecc7a72aedc20', // Ixswap Stable Coin
+  '0x5f3feA7f9C032a80391F3441507a1fDF1b3bA1e8', // Ixswap Stable Coin DAI
 ]
 
 // minimum liquidity required to count towards tracked volume for pairs with small # of Lps
