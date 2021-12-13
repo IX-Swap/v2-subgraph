@@ -22,7 +22,8 @@ import {
   createLiquidityPosition,
   ZERO_BD,
   BI_18,
-  createLiquiditySnapshot
+  createLiquiditySnapshot,
+  factoryContract
 } from './helpers'
 
 function isCompleteMint(mintId: string): boolean {
@@ -255,10 +256,20 @@ export function handleSync(event: Sync): void {
 
   
   // use derived amounts within pair
+  
   pair.trackedReserveETH = trackedLiquidityETH
-  pair.reserveETH = pair.reserve0
+
+  //hardcoded way :D
+  const _iusdcPair = factoryContract.getPair
+                (Address.fromString('0xd0a1e359811322d97991e03f863a0c30c2cf029c'), // weth
+                Address.fromString('0xbc55ad5733a1bb050f51bbdfb65ecc7a72aedc20'))  // iusdc
+
+  let iusdcPair = Pair.load(_iusdcPair.toHex()) 
+
+  pair.reserveETH = 
+    pair.reserve0
     .times(token0.derivedETH as BigDecimal)
-    .plus(pair.reserve1.times(token1.derivedETH as BigDecimal))
+    .plus(pair.reserve1.times(token1.derivedETH as BigDecimal));
   pair.reserveUSD = pair.reserveETH.times(bundle.ethPrice)
 
   // use tracked amounts globally
@@ -415,6 +426,7 @@ export function handleSwap(event: Swap): void {
     .plus(token0.derivedETH.times(amount0Total))
     .div(BigDecimal.fromString('2'))
   let derivedAmountUSD = derivedAmountETH.times(bundle.ethPrice)
+
 
   // only accounts for volume through white listed tokens
   let trackedAmountUSD = getTrackedVolumeUSD(amount0Total, token0 as Token, amount1Total, token1 as Token, pair as Pair)
