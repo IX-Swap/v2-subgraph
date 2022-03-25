@@ -19,6 +19,36 @@ $ /home/alex/Projects/ixs-monorepo/subgraph/node_modules/.bin/graph build
 - Compile subgraph
   Compile data source template: Pair => build/templates/Pair/Pair.wasm
 - Compile subgraph
+WARNING AS206: Compiling constant with non-constant initializer as mutable.
+
+ const WETH_ADDRESS = Address.fromString("0xd0a1e359811322d97991e03f863a0c30c2cf029c").toHex()
+                      ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+ in src/mappings/pricing.ts(14,21)
+
+WARNING AS206: Compiling constant with non-constant initializer as mutable.
+
+ const _iusdcPair = factoryContract.getPair
+                (Address.fromString('0xd0a1e359811322d97991e03f863a0c30c2cf029c'), // weth
+                Address.fromString('0xb10c4ec295225688461ddbc6d30e8291e9934464'))  // iusdc
+                    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+ in src/mappings/pricing.ts(16,19)
+
+WARNING AS206: Compiling constant with non-constant initializer as mutable.
+
+ const _idaiPair = factoryContract.getPair
+                (Address.fromString('0xd0a1e359811322d97991e03f863a0c30c2cf029c'), // weth
+                Address.fromString('0x8234ff99e7c1bfc45f076af399fd89e034e710dc'))  // idai
+                   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+ in src/mappings/pricing.ts(20,18)
+
+WARNING AS206: Compiling constant with non-constant initializer as mutable.
+
+   const _iusdcPair = factoryContract.getPair
+                (Address.fromString('0xd0a1e359811322d97991e03f863a0c30c2cf029c'), // weth
+                Address.fromString('0xbc55ad5733a1bb050f51bbdfb65ecc7a72aedc20'))  // iusdc
+         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+ in src/mappings/core.ts(263,8)
+
 ✔ Compile subgraph
 - Write compiled subgraph to build/
   Copy subgraph file build/schema.graphql
@@ -41,4 +71,4 @@ $ /home/alex/Projects/ixs-monorepo/subgraph/node_modules/.bin/graph build
 
 Build completed: /home/alex/Projects/ixs-monorepo/subgraph/build/subgraph.yaml
 
-Done in 7.90s.
+Done in 11.21s.
