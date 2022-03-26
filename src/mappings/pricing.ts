@@ -3,42 +3,17 @@ import { Pair, Token, Bundle } from '../types/schema'
 import { BigDecimal, Address, BigInt } from '@graphprotocol/graph-ts/index'
 import { ZERO_BD, factoryContract, ADDRESS_ZERO, ONE_BD, UNTRACKED_PAIRS } from './helpers'
 
-//const WETH_ADDRESS   = "0xd0a1e359811322d97991e03f863a0c30c2cf029c"
-const USDC_WETH_PAIR = '0x0000000000000000000000000000000000000000'; // created 10008355
-const DAI_WETH_PAIR  = '0x0000000000000000000000000000000000000000'; // created block 10042267
-const USDT_WETH_PAIR = '0x0000000000000000000000000000000000000000'; // created block 10093341
+const WETH_ADDRESS = Address.fromString("0x0d500b1d8e8ef31e21c99d1db9a6444d3adf1270").toHex()
 
-const IUSDC_WETH_PAIR = "0x5749a57A3e63B659C21db01607c268bc8D7D7E47";    // Ixswap Stable Coin      : block: ...
-const IDAI_WETH_PAIR  = "0xf60D483d820c063BC9AfcA8558aAfd5b3051A9d9";    // Ixswap Stable Coin DAI  : block: ...
+const _iusdcPair = '0x853ee4b2a13f8a742d64c8f088be7ba2131f670d'; // IUSDC-WMatic from quickswap
 
-const WETH_ADDRESS = Address.fromString("0xd0a1e359811322d97991e03f863a0c30c2cf029c").toHex()
-
-const _iusdcPair = factoryContract.getPair
-                (Address.fromString('0xd0a1e359811322d97991e03f863a0c30c2cf029c'), // weth
-                Address.fromString('0xb10c4ec295225688461ddbc6d30e8291e9934464'))  // iusdc
-
-const _idaiPair = factoryContract.getPair
-                (Address.fromString('0xd0a1e359811322d97991e03f863a0c30c2cf029c'), // weth
-                Address.fromString('0x8234ff99e7c1bfc45f076af399fd89e034e710dc'))  // idai
+const _idaiPair = '0x4a35582a710e1f4b2030a3f826da20bfb6703c09';   // idai-wmatic from quickswap
 
 
 export function getEthPriceInUSD(): BigDecimal {
-  // fetch eth prices for each stablecoin
-  // main
-  let daiPair = Pair.load(DAI_WETH_PAIR) // dai is token0
-  let usdcPair = Pair.load(USDC_WETH_PAIR) // usdc is token0
-  let usdtPair = Pair.load(USDT_WETH_PAIR) // usdt is token1
-  
 
-  //for kovan
-  // delete all this code untill -> scroll down
-  //
-  // let iusdcPair = Pair.load(IUSDC_WETH_PAIR) // Ixswap Stable Coin & Ixswap Stable Coin DAI
-  // let idaiPair = Pair.load(IDAI_WETH_PAIR) // Ixswap Stable Coin & Ixswap Stable Coin DAI
-  
-
-  let idaiPair = Pair.load(_idaiPair.toHex())   // Ixswap Stable Coin & Ixswap Stable Coin DAI
-  let iusdcPair = Pair.load(_iusdcPair.toHex()) // Ixswap Stable Coin & Ixswap Stable Coin DAI
+  let idaiPair = Pair.load(_idaiPair)   // Ixswap Stable Coin & Ixswap Stable Coin DAI
+  let iusdcPair = Pair.load(_iusdcPair) // Ixswap Stable Coin & Ixswap Stable Coin DAI
 
 
   if(iusdcPair !== null && idaiPair !== null)
@@ -61,87 +36,36 @@ export function getEthPriceInUSD(): BigDecimal {
   {
     return ZERO_BD
   }
-  // delete untill here
-
-
-
-  //          Decomment when move to mainnet
-  // all 3 have been created
-  // if (daiPair !== null && usdcPair !== null && usdtPair !== null)
-  // {
-  //   let totalLiquidityETH = daiPair.reserve1.plus(usdcPair.reserve1).plus(usdtPair.reserve0)
-  //   let daiWeight = daiPair.reserve1.div(totalLiquidityETH)
-  //   let usdcWeight = usdcPair.reserve1.div(totalLiquidityETH)
-  //   let usdtWeight = usdtPair.reserve0.div(totalLiquidityETH)
-
-  //   //kovan
-  //   let ixscWeight = usdcPair.reserve1.div(totalLiquidityETH)
-  //   let ixscdWeight = usdtPair.reserve0.div(totalLiquidityETH)
-
-
-  //   return daiPair.token0Price
-  //     .times(daiWeight)
-  //     .plus(usdcPair.token0Price.times(usdcWeight))
-  //     .plus(usdtPair.token1Price.times(usdtWeight))
-  // } 
-
-  /*    Decomment after moving on mainnet       */
-  // else if (daiPair !== null && usdcPair !== null) 
-  // {
-  //   let totalLiquidityETH = daiPair.reserve1.plus(usdcPair.reserve1)
-  //   let daiWeight = daiPair.reserve1.div(totalLiquidityETH)
-  //   let usdcWeight = usdcPair.reserve1.div(totalLiquidityETH)
-  //   return daiPair.token0Price.times(daiWeight).plus(usdcPair.token0Price.times(usdcWeight))
-  //   // USDC is the only pair so far
-  // } 
-  // else if (usdcPair !== null) 
-  // {
-  //   return usdcPair.token0Price
-  // } 
-  // else 
-  // {
-  //   return ZERO_BD
-  // }
 }
 
 // token where amounts should contribute to tracked volume and liquidity
 let WHITELIST: string[] = [
-  '0xd0a1e359811322d97991e03f863a0c30c2cf029c', // WETH
-  '0x8234ff99e7c1bfc45f076af399fd89e034e710dc', // Ixswap Stable Coin DAI
-  '0xb10c4ec295225688461ddbc6d30e8291e9934464', // Ixswap Stable Coin
+  '0x0d500b1d8e8ef31e21c99d1db9a6444d3adf1270', //WMATIC
+  '0x2791bca1f2de4661ed88a30c99a7a9449aa84174', // USDC
+  '0x8f3cf7ad23cd3cadbd9735aff958023239c6a063', // DAI
+
+  '0x1BA17C639BdaeCd8DC4AAc37df062d17ee43a1b8', // IXS
+  '0xe09910d2DA99Bad626f3747E0621Df7C4aEE1465', // ISXgov
+
+  '0x7ceb23fd6bc0add59e62ac25578270cff1b9f619', // WETH
+  '0x1bfd67037b42cf73acf2047067bd4f2c47d9bfd6', //WBTC
+  '0xc2132d05d31c914a87c6611c10748aeb04b58e8f', // USDT
+  '0x9719d867a500ef117cc201206b8ab51e794d3f82', //MAUSDC
+  '0x104592a158490a9228070e0a8e5343b499e125d0', //FRAX
+  '0x033d942a6b495c4071083f4cde1f17e986fe856c', //AGA
+  '0xd6df932a45c0f255f85145f286ea0b292b21c90b', //AAVE
+  '0xa7051c5a22d963b81d71c2ba64d46a877fbc1821', //EROWAN
+  '0xfe4546fefe124f30788c4cc1bb9aa6907a7987f9', //cxETH
   
-  '0x7B137484B6c38d6f2151FB1f4B3c054A3E042d71', // DAI
-  '0x0E965311aE3d4b1aaf702C71B19D179F197D1404', // USDC
-  '0x9eacD4317B9623cb43b6afBe121E2A9a2426AA2b', // USDT
-  '0x57Eb96F9D37F8884430756bE17ad7f02b565a670', // MKR
-  '0x2929D544839C7C659763cED98693e25BB4Cb69EB', // COMP
-  '0x4dD76BbE53d6C840dCFfCaD92FEDdF0248a5da7e', // LINK
-  '0x469e887C7B6Fc067a7cb2ECC1e22bA3512329B7B', // ANT
-  '0xC1E8E716825E5684c22221ef1E72B1a8A120863E', // SNX
-  '0x586e068592f6e5897abE70a283C5cf2E6F87946F', // YFI
-  '0x55b3EfB1Fe8a1919d77f2e6B8EED3766077f0442', // WBTC
-  
-  '0xA1997c88a60dCe7BF92A3644DA21e1FfC8F96dC2', // IXS
-  '0xB1519Ffe2761Eb68C11F53eBb550f71C4E04C35F', // ISXgov
-  
-  
-  // '0x48c0628f108a45b12cc63a7b9414c653434ed8b9', // yCurv
-  // '0x406555dbf02e9e4df9adeaec9da76abeed8c1bc3', // sUSD
-  // '0xb6b09fbffba6a5c4631e5f7b2e3ee183ac259c0d', // cUSDC
-  // '0x5d3a536e4d6dbd6114cc1ead35777bab948e3643', // cDAI
-  // '0xc6e977741487dd8457397b185709cd89b0cf5e7e', // TUSD
-  // '0xdB33dFD3D61308C33C63209845DaD3e6bfb2c674', // EBASE comment
-  // '0x853d955acef822db058eb8505911ed77f175b99e', // FRAX comment
-  // '0x764a5b7399d552a029d6c8e4a2a71bb5e9c82bd6', // WUST comment
 ]
 
 // minimum liquidity required to count towards tracked volume for pairs with small # of Lps
 //let MINIMUM_USD_THRESHOLD_NEW_PAIRS = BigDecimal.fromString('400000')
-let MINIMUM_USD_THRESHOLD_NEW_PAIRS = BigDecimal.fromString('95')
+let MINIMUM_USD_THRESHOLD_NEW_PAIRS = BigDecimal.fromString('0')
 
 // minimum liquidity for price to get tracked
 // let MINIMUM_LIQUIDITY_THRESHOLD_ETH = BigDecimal.fromString('2')
-let MINIMUM_LIQUIDITY_THRESHOLD_ETH = BigDecimal.fromString('0.1')
+let MINIMUM_LIQUIDITY_THRESHOLD_ETH = BigDecimal.fromString('0')
 
 /**
  * Search through graph to find derived Eth per token.

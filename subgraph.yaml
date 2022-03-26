@@ -6,11 +6,11 @@ schema:
 dataSources:
   - kind: ethereum/contract
     name: Factory
-    network: kovan
+    network: matic
     source:
-      address: '0xE83942dC9D244418272E6b7D83271D0BcFC0DB30'
+      address: '0xc2D0e0bc81494adB71Ce9Aa350cC875DaE12D81D'
       abi: Factory
-      startBlock: 28661930
+      startBlock: 26497124
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.3
@@ -34,7 +34,7 @@ dataSources:
 templates:
   - kind: ethereum/contract
     name: Pair
-    network: kovan
+    network: matic
     source:
       abi: Pair
     mapping:
