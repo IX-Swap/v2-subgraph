@@ -71,4 +71,4 @@ WARNING AS206: Compiling constant with non-constant initializer as mutable.
 
 Build completed: /home/alex/Projects/ixs-monorepo/subgraph/build/subgraph.yaml
 
-Done in 11.21s.
+Done in 9.17s.
