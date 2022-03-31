@@ -5,19 +5,15 @@ import { ZERO_BD, factoryContract, ADDRESS_ZERO, ONE_BD, UNTRACKED_PAIRS } from 
 
 const WETH_ADDRESS = Address.fromString("0x0d500b1d8e8ef31e21c99d1db9a6444d3adf1270").toHex()
 
-const _iusdcPair = factoryContract.getPair
-                (Address.fromString('0x0d500b1d8e8ef31e21c99d1db9a6444d3adf1270'), // weth
-                Address.fromString('0x2791bca1f2de4661ed88a30c99a7a9449aa84174'))  // iusdc
+const _iusdcPair = '0x853ee4b2a13f8a742d64c8f088be7ba2131f670d'; // IUSDC-WMatic from quickswap
 
-const _idaiPair = factoryContract.getPair
-                (Address.fromString('0x0d500b1d8e8ef31e21c99d1db9a6444d3adf1270'), // weth
-                Address.fromString('0x8f3cf7ad23cd3cadbd9735aff958023239c6a063'))  // idai
+const _idaiPair = '0x4a35582a710e1f4b2030a3f826da20bfb6703c09';   // idai-wmatic from quickswap
 
 
 export function getEthPriceInUSD(): BigDecimal {
 
-  let idaiPair = Pair.load(_idaiPair.toHex())   // Ixswap Stable Coin & Ixswap Stable Coin DAI
-  let iusdcPair = Pair.load(_iusdcPair.toHex()) // Ixswap Stable Coin & Ixswap Stable Coin DAI
+  let idaiPair = Pair.load(_idaiPair)   // Ixswap Stable Coin & Ixswap Stable Coin DAI
+  let iusdcPair = Pair.load(_iusdcPair) // Ixswap Stable Coin & Ixswap Stable Coin DAI
 
 
   if(iusdcPair !== null && idaiPair !== null)
@@ -65,11 +61,11 @@ let WHITELIST: string[] = [
 
 // minimum liquidity required to count towards tracked volume for pairs with small # of Lps
 //let MINIMUM_USD_THRESHOLD_NEW_PAIRS = BigDecimal.fromString('400000')
-let MINIMUM_USD_THRESHOLD_NEW_PAIRS = BigDecimal.fromString('95')
+let MINIMUM_USD_THRESHOLD_NEW_PAIRS = BigDecimal.fromString('0')
 
 // minimum liquidity for price to get tracked
 // let MINIMUM_LIQUIDITY_THRESHOLD_ETH = BigDecimal.fromString('2')
-let MINIMUM_LIQUIDITY_THRESHOLD_ETH = BigDecimal.fromString('0.1')
+let MINIMUM_LIQUIDITY_THRESHOLD_ETH = BigDecimal.fromString('0')
 
 /**
  * Search through graph to find derived Eth per token.
