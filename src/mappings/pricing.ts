@@ -3,35 +3,46 @@ import { Pair, Token, Bundle } from '../types/schema'
 import { BigDecimal, Address } from '@graphprotocol/graph-ts/index'
 import { ZERO_BD, ONE_BD } from './helpers'
 
-const WIXS_ADDRESS = Address.fromString("0x1BA17C639BdaeCd8DC4AAc37df062d17ee43a1b8").toHex()
-const USDC_WIXS_PAIR = Address.fromString("0xD093A031df30F186976A1e2936B16d95ca7919D6").toHex() // created 10008355
+const WIXS_ADDRESS = Address.fromString("0xd0a1e359811322d97991e03f863a0c30c2cf029c").toHex()
+const _iusdcPair = Address.fromString("0x9381de79c513d2196bca1f4b31a0f53357b19a7c").toHex()
+const _idaiPair = Address.fromString("0x6fB49E7D93570cB01e60f6613a876C5A8D8c538F").toHex()
 
 
 export function getEthPriceInUSD(): BigDecimal {
-  //For now we will only use USDC_WETH pair for ETH prices
-  let usdcPair = Pair.load(USDC_WIXS_PAIR);
-  if (usdcPair !== null) {
-    return usdcPair.token1Price
+  let idaiPair = Pair.load(_idaiPair)   // Ixswap Stable Coin & Ixswap Stable Coin DAI
+  let iusdcPair = Pair.load(_iusdcPair) // Ixswap Stable Coin & Ixswap Stable Coin DAI
+
+
+  if(iusdcPair !== null && idaiPair !== null)
+  {
+    let totalLiquidityETH = iusdcPair.reserve1.plus(idaiPair.reserve1)
+    let iusdcWeight = iusdcPair.reserve1.div(totalLiquidityETH)
+    let idaiWeight = idaiPair.reserve1.div(totalLiquidityETH)
+
+    return iusdcPair.token0Price.times(iusdcWeight).plus(idaiPair.token0Price.times(idaiWeight)).times(BigDecimal.fromString('1'))
   }
-  else {
+  else if(idaiPair !== null)
+  {
+    return idaiPair.token0Price
+  }
+   if(iusdcPair !== null)
+  {
+    return iusdcPair.token0Price
+  }
+  else
+  {
     return ZERO_BD
   }
 }
 
 // token where amounts should contribute to tracked volume and liquidity
 let WHITELIST: string[] = [
-  Address.fromString("0x1BA17C639BdaeCd8DC4AAc37df062d17ee43a1b8").toHex(),
-  Address.fromString("0x7ceb23fd6bc0add59e62ac25578270cff1b9f619").toHex(),
-  Address.fromString("0x2791bca1f2de4661ed88a30c99a7a9449aa84174").toHex(),
-  Address.fromString("0xe09910d2DA99Bad626f3747E0621Df7C4aEE1465").toHex(),
-  Address.fromString("0x0d500b1d8e8ef31e21c99d1db9a6444d3adf1270").toHex(),
-  Address.fromString("0x1bfd67037b42cf73acf2047067bd4f2c47d9bfd6").toHex(), //WBTC
-  Address.fromString("0x8f3cf7ad23cd3cadbd9735aff958023239c6a063").toHex(), // DAI
-  Address.fromString("0xc2132d05d31c914a87c6611c10748aeb04b58e8f").toHex(), // USDT
-  Address.fromString("0x9719d867a500ef117cc201206b8ab51e794d3f82").toHex(), //MAUSDC
-  Address.fromString("0x104592a158490a9228070e0a8e5343b499e125d0").toHex(), //FRAX
-  Address.fromString("0x033d942a6b495c4071083f4cde1f17e986fe856c").toHex(), //AGA
-  Address.fromString("0xd6df932a45c0f255f85145f286ea0b292b21c90b").toHex() //AAVE
+  Address.fromString("0xd0a1e359811322d97991e03f863a0c30c2cf029c").toHex(), // WETH
+  Address.fromString("0x992A460e0ef16b94118a98ADEE14C72e6A9aA34F").toHex(), // Ixswap Stable Coin DAI
+  Address.fromString("0xFfF7880d81D2E2ec676209E75BBCF35D1974168a").toHex(), // Ixswap Stable Coin
+  Address.fromString("0x296275783B369ce3DAc1F4bF7aA5165Aa0dFC6d8").toHex(), // USDT
+  Address.fromString("0xA1997c88a60dCe7BF92A3644DA21e1FfC8F96dC2").toHex(), // IXS
+  Address.fromString("0xB1519Ffe2761Eb68C11F53eBb550f71C4E04C35F").toHex() // ISXgov
 ]
 
 export function isOnWhitelist(token: string): boolean {
@@ -42,7 +53,7 @@ export function isOnWhitelist(token: string): boolean {
 }
 
 // minimum liquidity for price to get tracked
-let MINIMUM_LIQUIDITY_THRESHOLD_ETH = BigDecimal.fromString('1')
+let MINIMUM_LIQUIDITY_THRESHOLD_ETH = BigDecimal.fromString('0.3')
 
 /**
  * Search through graph to find derived Eth per token.
