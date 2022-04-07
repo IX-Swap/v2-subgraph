@@ -19,7 +19,7 @@ export function getEthPriceInUSD(): BigDecimal {
     let iusdcWeight = iusdcPair.reserve1.div(totalLiquidityETH)
     let idaiWeight = idaiPair.reserve1.div(totalLiquidityETH)
 
-    return iusdcPair.token0Price.times(iusdcWeight).plus(idaiPair.token0Price.times(idaiWeight)).times(BigDecimal.fromString('1'))
+    return iusdcPair.token1Price.times(iusdcWeight).plus(idaiPair.token1Price.times(idaiWeight)).times(BigDecimal.fromString('1'))
   }
   else if(idaiPair !== null)
   {
