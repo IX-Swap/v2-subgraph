@@ -8,7 +8,8 @@ import { Factory as FactoryContract } from '../types/templates/Pair/Factory'
 import { TokenDefinition } from './tokenDefinition'
 
 export const ADDRESS_ZERO = '0x0000000000000000000000000000000000000000'
-export const FACTORY_ADDRESS = '0xc2D0e0bc81494adB71Ce9Aa350cC875DaE12D81D'
+// export const FACTORY_ADDRESS = '0xc2D0e0bc81494adB71Ce9Aa350cC875DaE12D81D'
+export const FACTORY_ADDRESS = '0x51CC508F1f4569073de51fe0Ef473E5E4E9BcdC0'
 
 export let ZERO_BI = BigInt.fromI32(0)
 export let ONE_BI = BigInt.fromI32(1)
@@ -47,9 +48,8 @@ export function convertTokenToDecimal(tokenAmount: BigInt, exchangeDecimals: Big
 export function equalToZero(value: BigDecimal): boolean {
   const formattedVal = parseFloat(value.toString())
   const zero = parseFloat(ZERO_BD.toString())
-  
-  if (zero == formattedVal)
-    return true
+
+  if (zero == formattedVal) return true
 
   return false
 }
@@ -61,7 +61,7 @@ export function isNullEthValue(value: string): boolean {
 export function fetchTokenSymbol(tokenAddress: Address): string {
   // static definitions overrides
   let staticDefinition = TokenDefinition.fromAddress(tokenAddress)
-  if(staticDefinition != null) {
+  if (staticDefinition != null) {
     return (staticDefinition as TokenDefinition).symbol
   }
 
@@ -71,21 +71,16 @@ export function fetchTokenSymbol(tokenAddress: Address): string {
   // try types string and bytes32 for symbol
   let symbolValue = 'unknown'
   let symbolResult = contract.try_symbol()
-  if (symbolResult.reverted) 
-  {
+  if (symbolResult.reverted) {
     let symbolResultBytes = contractSymbolBytes.try_symbol()
-    
-    if (!symbolResultBytes.reverted) 
-    {
+
+    if (!symbolResultBytes.reverted) {
       // for broken pairs that have no symbol function exposed
-      if (!isNullEthValue(symbolResultBytes.value.toHexString())) 
-      {
+      if (!isNullEthValue(symbolResultBytes.value.toHexString())) {
         symbolValue = symbolResultBytes.value.toString()
       }
     }
-  } 
-  else 
-  {
+  } else {
     symbolValue = symbolResult.value
   }
 
@@ -95,7 +90,7 @@ export function fetchTokenSymbol(tokenAddress: Address): string {
 export function fetchTokenName(tokenAddress: Address): string {
   // static definitions overrides
   let staticDefinition = TokenDefinition.fromAddress(tokenAddress)
-  if(staticDefinition != null) {
+  if (staticDefinition != null) {
     return (staticDefinition as TokenDefinition).name
   }
 
@@ -133,7 +128,7 @@ export function fetchTokenTotalSupply(tokenAddress: Address): BigInt {
 export function fetchTokenDecimals(tokenAddress: Address): BigInt {
   // static definitions overrides
   let staticDefinition = TokenDefinition.fromAddress(tokenAddress)
-  if(staticDefinition != null) {
+  if (staticDefinition != null) {
     return (staticDefinition as TokenDefinition).decimals
   }
 
@@ -155,14 +150,13 @@ export function createLiquidityPosition(exchange: Address, user: Address): Liqui
 
   let liquidityTokenBalance = LiquidityPosition.load(id)
 
-  if (liquidityTokenBalance === null) 
-  {
+  if (liquidityTokenBalance === null) {
     let pair = Pair.load(exchange.toHexString())
 
     pair.liquidityProviderCount = pair.liquidityProviderCount.plus(ONE_BI)
     liquidityTokenBalance = new LiquidityPosition(id)
     liquidityTokenBalance.liquidityTokenBalance = ZERO_BD
-    
+
     liquidityTokenBalance.pair = exchange.toHexString()
     liquidityTokenBalance.user = user.toHexString()
 

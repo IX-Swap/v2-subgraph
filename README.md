@@ -55,3 +55,15 @@ This query fetches aggredated data from all ixs pairs and tokens, to give a view
   }
 }
 ```
+
+## Deployment
+
+Sample command
+
+```
+npx graph deploy dex-base-mainnet-staging \
+  --version-label v0.0.1 \
+  --node https://subgraphs.alchemy.com/api/subgraphs/deploy \
+  --access-token CvYjzd1.... \
+  --ipfs https://ipfs.satsuma.xyz subgraph.base.yaml
+```

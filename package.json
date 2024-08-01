@@ -11,6 +11,9 @@
     "deploy-stage": "yarn graph deploy ix-swap/ixs-stage --debug --ipfs https://api.thegraph.com/ipfs/ --node https://api.thegraph.com/deploy/ --access-token",
     "deploy-prod": "yarn graph deploy ix-swap/ixs --ipfs https://api.thegraph.com/ipfs/ --node https://api.thegraph.com/deploy/ --access-token"
   },
+  "resolutions": {
+    "concat-stream": "2.0.0"
+  },
   "devDependencies": {
     "@graphprotocol/graph-cli": "^0.16.0",
     "@graphprotocol/graph-ts": "^0.16.0",

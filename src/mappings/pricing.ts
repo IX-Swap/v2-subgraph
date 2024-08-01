@@ -3,60 +3,53 @@ import { Pair, Token, Bundle } from '../types/schema'
 import { BigDecimal, Address, BigInt } from '@graphprotocol/graph-ts/index'
 import { ZERO_BD, factoryContract, ADDRESS_ZERO, ONE_BD, UNTRACKED_PAIRS } from './helpers'
 
-const WETH_ADDRESS = Address.fromString("0x0d500b1d8e8ef31e21c99d1db9a6444d3adf1270").toHex()
+let WETH_ADDRESS = Address.fromString('0x4200000000000000000000000000000000000006').toHex()
 
-const _iusdcPair = '0x853ee4b2a13f8a742d64c8f088be7ba2131f670d'; // IUSDC-WMatic from quickswap
+const _iusdcPair = '0x88A43bbDF9D098eEC7bCEda4e2494615dfD9bB9C' // Uniswap V2 WETH_USDC pair
 
-const _idaiPair = '0x4a35582a710e1f4b2030a3f826da20bfb6703c09';   // idai-wmatic from quickswap
-
+const _idaiPair = '0x67b00B46FA4f4F24c03855c5C8013C0B938B3eEc' // Aedrome V2 WETH_DAI pair
 
 export function getEthPriceInUSD(): BigDecimal {
-
-  let idaiPair = Pair.load(_idaiPair)   // Ixswap Stable Coin & Ixswap Stable Coin DAI
+  let idaiPair = Pair.load(_idaiPair) // Ixswap Stable Coin & Ixswap Stable Coin DAI
   let iusdcPair = Pair.load(_iusdcPair) // Ixswap Stable Coin & Ixswap Stable Coin DAI
 
-
-  if(iusdcPair !== null && idaiPair !== null)
-  {
+  if (iusdcPair !== null && idaiPair !== null) {
     let totalLiquidityETH = iusdcPair.reserve1.plus(idaiPair.reserve1)
     let iusdcWeight = iusdcPair.reserve1.div(totalLiquidityETH)
     let idaiWeight = idaiPair.reserve1.div(totalLiquidityETH)
 
-    return iusdcPair.token0Price.times(iusdcWeight).plus(idaiPair.token0Price.times(idaiWeight)).times(BigDecimal.fromString('1'))
-  }
-  else if(idaiPair !== null)
-  {
+    return iusdcPair.token0Price
+      .times(iusdcWeight)
+      .plus(idaiPair.token0Price.times(idaiWeight))
+      .times(BigDecimal.fromString('1'))
+  } else if (idaiPair !== null) {
     return idaiPair.token0Price
   }
-   if(iusdcPair !== null)
-  {
+  if (iusdcPair !== null) {
     return iusdcPair.token0Price
-  }
-  else
-  {
+  } else {
     return ZERO_BD
   }
 }
 
 // token where amounts should contribute to tracked volume and liquidity
 let WHITELIST: string[] = [
-  '0x0d500b1d8e8ef31e21c99d1db9a6444d3adf1270', //WMATIC
-  '0x2791bca1f2de4661ed88a30c99a7a9449aa84174', // USDC
-  '0x8f3cf7ad23cd3cadbd9735aff958023239c6a063', // DAI
+  '0x4200000000000000000000000000000000000006', //WMATIC
+  '0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913', // USDC
+  '0x50c5725949A6F0c72E6C4a641F24049A917DB0Cb' // DAI
 
-  '0x1BA17C639BdaeCd8DC4AAc37df062d17ee43a1b8', // IXS
-  '0xe09910d2DA99Bad626f3747E0621Df7C4aEE1465', // ISXgov
+  // '0x1BA17C639BdaeCd8DC4AAc37df062d17ee43a1b8', // IXS
+  // '0xe09910d2DA99Bad626f3747E0621Df7C4aEE1465', // ISXgov
 
-  '0x7ceb23fd6bc0add59e62ac25578270cff1b9f619', // WETH
-  '0x1bfd67037b42cf73acf2047067bd4f2c47d9bfd6', //WBTC
-  '0xc2132d05d31c914a87c6611c10748aeb04b58e8f', // USDT
-  '0x9719d867a500ef117cc201206b8ab51e794d3f82', //MAUSDC
-  '0x104592a158490a9228070e0a8e5343b499e125d0', //FRAX
-  '0x033d942a6b495c4071083f4cde1f17e986fe856c', //AGA
-  '0xd6df932a45c0f255f85145f286ea0b292b21c90b', //AAVE
-  '0xa7051c5a22d963b81d71c2ba64d46a877fbc1821', //EROWAN
-  '0xfe4546fefe124f30788c4cc1bb9aa6907a7987f9', //cxETH
-  
+  // '0x7ceb23fd6bc0add59e62ac25578270cff1b9f619', // WETH
+  // '0x1bfd67037b42cf73acf2047067bd4f2c47d9bfd6', //WBTC
+  // '0xc2132d05d31c914a87c6611c10748aeb04b58e8f', // USDT
+  // '0x9719d867a500ef117cc201206b8ab51e794d3f82', //MAUSDC
+  // '0x104592a158490a9228070e0a8e5343b499e125d0', //FRAX
+  // '0x033d942a6b495c4071083f4cde1f17e986fe856c', //AGA
+  // '0xd6df932a45c0f255f85145f286ea0b292b21c90b', //AAVE
+  // '0xa7051c5a22d963b81d71c2ba64d46a877fbc1821', //EROWAN
+  // '0xfe4546fefe124f30788c4cc1bb9aa6907a7987f9' //cxETH
 ]
 
 // minimum liquidity required to count towards tracked volume for pairs with small # of Lps
@@ -79,17 +72,14 @@ export function findEthPerToken(token: Token): BigDecimal {
   // loop through whitelist and check if paired with any
   for (let i = 0; i < WHITELIST.length; ++i) {
     let pairAddress = factoryContract.getPair(Address.fromString(token.id), Address.fromString(WHITELIST[i]))
-    if (pairAddress.toHexString() != ADDRESS_ZERO) 
-    {
+    if (pairAddress.toHexString() != ADDRESS_ZERO) {
       let pair = Pair.load(pairAddress.toHexString())
-      
-      if (pair.token0 == token.id && pair.reserveETH.gt(MINIMUM_LIQUIDITY_THRESHOLD_ETH)) 
-      {
+
+      if (pair.token0 == token.id && pair.reserveETH.gt(MINIMUM_LIQUIDITY_THRESHOLD_ETH)) {
         let token1 = Token.load(pair.token1)
         return pair.token1Price.times(token1.derivedETH as BigDecimal) // return token1 per our token * Eth per token 1
       }
-      if (pair.token1 == token.id && pair.reserveETH.gt(MINIMUM_LIQUIDITY_THRESHOLD_ETH)) 
-      {
+      if (pair.token1 == token.id && pair.reserveETH.gt(MINIMUM_LIQUIDITY_THRESHOLD_ETH)) {
         let token0 = Token.load(pair.token0)
         return pair.token0Price.times(token0.derivedETH as BigDecimal) // return token0 per our token * ETH per token 0
       }
