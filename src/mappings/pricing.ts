@@ -3,11 +3,11 @@ import { Pair, Token, Bundle } from '../types/schema'
 import { BigDecimal, Address, BigInt } from '@graphprotocol/graph-ts/index'
 import { ZERO_BD, factoryContract, ADDRESS_ZERO, ONE_BD, UNTRACKED_PAIRS } from './helpers'
 
-let WETH_ADDRESS = Address.fromString('0x4200000000000000000000000000000000000006').toHex()
+let WETH_ADDRESS = Address.fromString('0x949546713004ee02537292b1F41046f705909191').toHex()
 
-const _iusdcPair = '0x88A43bbDF9D098eEC7bCEda4e2494615dfD9bB9C' // Uniswap V2 WETH_USDC pair
+const _iusdcPair = '0xE762Dd68977079962F6718df26836a53Af8A8afb' // Uniswap V2 WETH_USDC pair
 
-const _idaiPair = '0x67b00B46FA4f4F24c03855c5C8013C0B938B3eEc' // Aedrome V2 WETH_DAI pair
+const _idaiPair = '0xa2b664993130f1e9812AF78380De88D914CBc775' // Aedrome V2 WETH_DAI pair
 
 export function getEthPriceInUSD(): BigDecimal {
   let idaiPair = Pair.load(_idaiPair) // Ixswap Stable Coin & Ixswap Stable Coin DAI
@@ -34,8 +34,8 @@ export function getEthPriceInUSD(): BigDecimal {
 
 // token where amounts should contribute to tracked volume and liquidity
 let WHITELIST: string[] = [
-  '0x4200000000000000000000000000000000000006', //WMATIC
-  '0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913', // USDC
+  '0x949546713004ee02537292b1F41046f705909191', //WMATIC
+  '0xA9c2c7D5E9bdA19bF9728384FFD3cF71Ada5dfcB', // USDC
   '0x50c5725949A6F0c72E6C4a641F24049A917DB0Cb' // DAI
 
   // '0x1BA17C639BdaeCd8DC4AAc37df062d17ee43a1b8', // IXS
