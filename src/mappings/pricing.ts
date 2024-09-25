@@ -3,13 +3,22 @@ import { Pair, Token, Bundle } from '../types/schema'
 import { BigDecimal, Address, BigInt } from '@graphprotocol/graph-ts/index'
 import { ZERO_BD, factoryContract, ADDRESS_ZERO, ONE_BD, UNTRACKED_PAIRS } from './helpers'
 
-let WETH_ADDRESS = Address.fromString('0x4200000000000000000000000000000000000006').toHex()
+let WETH_ADDRESS = Address.fromString('0xfe550bffb51eb645ea3b324d772a19ac449e92c5').toHex()
 
-const _iusdcPair = '0x88A43bbDF9D098eEC7bCEda4e2494615dfD9bB9C' // Uniswap V2 WETH_USDC pair
+const _iusdcPair = '0xd22a820dc52f1cacea7a5c86da16757f434f43c6' // IXswap / USDC
 
 const _idaiPair = '0x67b00B46FA4f4F24c03855c5C8013C0B938B3eEc' // Aedrome V2 WETH_DAI pair
 
 export function getEthPriceInUSD(): BigDecimal {
+  let iusdcPair = Pair.load(_iusdcPair) // Ixswap Stable Coin & Ixswap Stable Coin DAI
+  if (iusdcPair !== null) {
+    return iusdcPair.token0Price
+  } else {
+    return ZERO_BD
+  }
+}
+
+export function getEthPriceInUSDOld(): BigDecimal {
   let idaiPair = Pair.load(_idaiPair) // Ixswap Stable Coin & Ixswap Stable Coin DAI
   let iusdcPair = Pair.load(_iusdcPair) // Ixswap Stable Coin & Ixswap Stable Coin DAI
 
@@ -34,11 +43,10 @@ export function getEthPriceInUSD(): BigDecimal {
 
 // token where amounts should contribute to tracked volume and liquidity
 let WHITELIST: string[] = [
-  '0x4200000000000000000000000000000000000006', //WMATIC
-  '0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913', // USDC
-  '0x50c5725949A6F0c72E6C4a641F24049A917DB0Cb' // DAI
-
-  // '0x1BA17C639BdaeCd8DC4AAc37df062d17ee43a1b8', // IXS
+  '0x4200000000000000000000000000000000000006', //WETH
+  '0x833589fcd6edb6e08f4c7c32d4f71b54bda02913', // USDC
+  '0x50c5725949a6f0c72e6c4a641f24049a917db0cb', // DAI
+  '0xfe550bffb51eb645ea3b324d772a19ac449e92c5' // IXS
   // '0xe09910d2DA99Bad626f3747E0621Df7C4aEE1465', // ISXgov
 
   // '0x7ceb23fd6bc0add59e62ac25578270cff1b9f619', // WETH

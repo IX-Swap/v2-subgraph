@@ -9,7 +9,7 @@ import { TokenDefinition } from './tokenDefinition'
 
 export const ADDRESS_ZERO = '0x0000000000000000000000000000000000000000'
 // export const FACTORY_ADDRESS = '0xc2D0e0bc81494adB71Ce9Aa350cC875DaE12D81D'
-export const FACTORY_ADDRESS = '0x51CC508F1f4569073de51fe0Ef473E5E4E9BcdC0'
+export const FACTORY_ADDRESS = '0x2eE28d1Bbc2EcB1fFDB83E8055d585E9F0fb757f'
 
 export let ZERO_BI = BigInt.fromI32(0)
 export let ONE_BI = BigInt.fromI32(1)

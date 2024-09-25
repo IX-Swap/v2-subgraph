@@ -254,15 +254,13 @@ export function handleSync(event: Sync): void {
     trackedLiquidityETH = ZERO_BD
   }
 
-  
   // use derived amounts within pair
-  
+
   pair.trackedReserveETH = trackedLiquidityETH
 
-  pair.reserveETH = 
-    pair.reserve0
+  pair.reserveETH = pair.reserve0
     .times(token0.derivedETH as BigDecimal)
-    .plus(pair.reserve1.times(token1.derivedETH as BigDecimal));
+    .plus(pair.reserve1.times(token1.derivedETH as BigDecimal))
   pair.reserveUSD = pair.reserveETH.times(bundle.ethPrice)
 
   // use tracked amounts globally
@@ -420,16 +418,13 @@ export function handleSwap(event: Swap): void {
     .div(BigDecimal.fromString('2'))
   let derivedAmountUSD = derivedAmountETH.times(bundle.ethPrice)
 
-
   // only accounts for volume through white listed tokens
   let trackedAmountUSD = getTrackedVolumeUSD(amount0Total, token0 as Token, amount1Total, token1 as Token, pair as Pair)
-
 
   let trackedAmountETH: BigDecimal
   if (bundle.ethPrice.equals(ZERO_BD)) {
     trackedAmountETH = ZERO_BD
-  } 
-  else {
+  } else {
     trackedAmountETH = trackedAmountUSD.div(bundle.ethPrice)
   }
 
