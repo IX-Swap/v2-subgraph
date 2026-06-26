@@ -91,6 +91,19 @@ export function handleTransfer(event: Transfer): void {
       // save entities
       // transaction.save()
       factory.save()
+    } else {
+      // A prior incomplete mint in this tx is the _mintFee mint to feeTo:
+      // Uniswap V2 mint() runs _mintFee (mints LP to feeTo) BEFORE _mint(to).
+      // So the first ADDRESS_ZERO transfer is the protocol fee, and THIS one is
+      // the real liquidity provider. Reattribute: keep the fee on feeTo/feeLiquidity
+      // and point to/liquidity at the actual recipient. Without this, the fee
+      // recipient is incorrectly recorded as the LP. See v2-subgraph#1.
+      let mint = MintEvent.load(mints[mints.length - 1]) as MintEvent
+      mint.feeTo = mint.to
+      mint.feeLiquidity = mint.liquidity
+      mint.to = to
+      mint.liquidity = value
+      mint.save()
     }
   }
 
